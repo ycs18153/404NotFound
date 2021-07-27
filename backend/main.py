@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import HTMLResponse
 
 import pandas
+import matplotlib
 
 from model import Todo
 
