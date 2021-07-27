@@ -1,6 +1,8 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import HTMLResponse
+
 import pandas
+
 from model import Todo
 
 from controller import fetch_one_todo, fetch_all_todos, create_todo, update_todo, remove_todo
@@ -21,6 +23,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @app.get("/", response_class=HTMLResponse)
 async def root_page():
     return """<html>
@@ -32,10 +35,12 @@ async def root_page():
         </body>
     </html>"""
 
+
 @app.get("/api/todo")
 async def get_todo():
     response = await fetch_all_todos()
     return response
+
 
 @app.get("/api/todo/{title}", response_model=Todo)
 async def get_todo_by_title(title):
@@ -43,6 +48,7 @@ async def get_todo_by_title(title):
     if response:
         return response
     raise HTTPException(404, f"There is no todo with the title {title}")
+
 
 @app.post("/api/todo/", response_model=Todo)
 async def post_todo(todo: Todo):
@@ -52,12 +58,14 @@ async def post_todo(todo: Todo):
         return response
     raise HTTPException(400, "Please check with server or post body.")
 
+
 @app.put("/api/todo/{title}/", response_model=Todo)
 async def put_todo(title: str, desc: str):
     response = await update_todo(title, desc)
     if response:
         return response
     raise HTTPException(404, f"There is no todo with the title {title}")
+
 
 @app.delete("/api/todo/{title}")
 async def delete_todo(title):
