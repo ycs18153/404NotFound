@@ -1,8 +1,10 @@
 import motor.motor_asyncio
 from model import Todo
 
-client = motor.motor_asyncio.AsyncIOMotorClient('mongodb://root:root@localhost:27017/')
-database = client.TodoList
+client = motor.motor_asyncio.AsyncIOMotorClient('mongodb+srv://admin:admin@cluster0.gitsk.mongodb.net/myFirstDatabase?retryWrites=true')
+# mongodb://root:root@localhost:27017/
+database = client.myFirstDatabase
+# TodoList
 collection = database.todo
 
 async def fetch_one_todo(title):
