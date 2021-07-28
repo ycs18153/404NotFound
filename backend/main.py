@@ -5,13 +5,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 
 from model import Todo
-from controller import fetch_one_todo, fetch_all_todos, create_todo, update_todo, remove_todo
+from controller import fetch_user_todo, fetch_all_todos, create_todo, update_todo, remove_todo
 from config import settings
 from todo.routers import router as todo_router
 
 
-
 app = FastAPI()
+
 
 @app.on_event("startup")
 async def startup_db_client():
@@ -56,12 +56,12 @@ async def get_todo():
     return response
 
 
-@app.get("/api/todo/{title}", response_model=Todo)
-async def get_todo_by_title(title):
-    response = await fetch_one_todo(title)
+@app.get("/api/todo/{user_id}", response_model=Todo)
+async def get_todo_by_title(user_id):
+    response = await fetch_user_todo(user_id)
     if response:
         return response
-    raise HTTPException(404, f"There is no todo with the title {title}")
+    raise HTTPException(404, f"There is no todo with the title {user_id}")
 
 
 @app.post("/api/todo/", response_model=Todo)

@@ -1,7 +1,8 @@
 import motor.motor_asyncio
 from model import Todo
 
-client = motor.motor_asyncio.AsyncIOMotorClient('mongodb+srv://admin:admin@cluster0.gitsk.mongodb.net/myFirstDatabase?retryWrites=true')
+client = motor.motor_asyncio.AsyncIOMotorClient(
+    'mongodb+srv://admin:admin@cluster0.gitsk.mongodb.net/myFirstDatabase?retryWrites=true')
 # mongodb://root:root@localhost:27017/
 database = client.myFirstDatabase
 # TodoList
@@ -9,8 +10,8 @@ database = client.myFirstDatabase
 collection = database.todo
 
 
-async def fetch_one_todo(title):
-    document = await collection.find_one({"title": title})
+async def fetch_user_todo(user_id):
+    document = await collection.find_one({"user_id": user_id})
     return document
 
 
