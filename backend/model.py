@@ -3,7 +3,9 @@ import datetime
 
 
 class Todo(BaseModel):
-    user: str
-    title: str
-    description: str
-    update_dt: datetime.datetime = datetime.datetime.now()
+    user_id: str
+    todo_name: str
+    todo_date: str
+    todo_contents: str
+    update_date: str
+    todo_completed: bool = False
