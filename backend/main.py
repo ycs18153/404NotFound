@@ -50,18 +50,18 @@ async def root_page():
     </html>"""
 
 
-@app.get("/api/todo")
+@app.get("/api/todo/")
 async def get_todo():
     response = await fetch_all_todos()
     return response
 
 
-@app.get("/api/todo/{user_id}", response_model=Todo)
-async def get_todo_by_title(user_id):
-    response = await fetch_user_todo(user_id)
+@app.get("/api/todo/{todo_name}", response_model=Todo)
+async def get_todo_by_title(todo_name):
+    response = await fetch_user_todo(todo_name)
     if response:
         return response
-    raise HTTPException(404, f"There is no todo with the title {user_id}")
+    raise HTTPException(404, f"There is no todo with the title {todo_name}")
 
 
 @app.post("/api/todo/", response_model=Todo)

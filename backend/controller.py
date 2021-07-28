@@ -10,8 +10,8 @@ database = client.myFirstDatabase
 collection = database.todo
 
 
-async def fetch_user_todo(user_id):
-    document = await collection.find_one({"user_id": user_id})
+async def fetch_user_todo(todo_name):
+    document = await collection.find_one({"todo_name": todo_name})
     return document
 
 
