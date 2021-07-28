@@ -2,8 +2,8 @@ import motor.motor_asyncio
 from model import Todo
 
 client = motor.motor_asyncio.AsyncIOMotorClient(
-    'mongodb://root:root@localhost:27017/')
-database = client.TodoList
+    'mongodb+srv://admin:admin@cluster0.gitsk.mongodb.net/myFirstDatabase?retryWrites=true')
+database = client.myFirstDatabase
 collection = database.todo
 
 

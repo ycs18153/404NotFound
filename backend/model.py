@@ -7,5 +7,5 @@ class Todo(BaseModel):
     todo_name: str
     todo_date: str
     todo_contents: str
-    update_date: str
+    todo_update_date: str
     todo_completed: bool = False
