@@ -1,7 +1,9 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import HTMLResponse
+
 from fastapi.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
+
 from model import Todo
 from controller import fetch_one_todo, fetch_all_todos, create_todo, update_todo, remove_todo
 from config import settings
@@ -79,9 +81,9 @@ async def put_todo(title: str, desc: str):
     raise HTTPException(404, f"There is no todo with the title {title}")
 
 
-@app.delete("/api/todo/{title}")
-async def delete_todo(title):
-    response = await remove_todo(title)
+@app.delete("/api/todo/{todo_name}")
+async def delete_todo(todo_name):
+    response = await remove_todo(todo_name)
     if response:
         return "Successfully deleted todo"
-    raise HTTPException(404, f"There is no todo with the title {title}")
+    raise HTTPException(404, f"There is no todo with the title {todo_name}")

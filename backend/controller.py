@@ -5,11 +5,14 @@ client = motor.motor_asyncio.AsyncIOMotorClient('mongodb+srv://admin:admin@clust
 # mongodb://root:root@localhost:27017/
 database = client.myFirstDatabase
 # TodoList
+
 collection = database.todo
+
 
 async def fetch_one_todo(title):
     document = await collection.find_one({"title": title})
     return document
+
 
 async def fetch_all_todos():
     todos = []
@@ -17,6 +20,7 @@ async def fetch_all_todos():
     async for document in cursor:
         todos.append(Todo(**document))
     return todos
+
 
 async def create_todo(todo):
     document = todo
@@ -29,6 +33,7 @@ async def update_todo(title, desc):
     document = await collection.find_one({"title": title})
     return document
 
-async def remove_todo(title):
-    await collection.delete_one({"title": title})
+
+async def remove_todo(todo_name):
+    await collection.delete_one({"todo_name": todo_name})
     return True
