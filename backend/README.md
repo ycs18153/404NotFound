@@ -1,5 +1,5 @@
-# Setup backend
-### please run the following command for build the backend server locally
+## Setup tutorial
+##### Please run the following command to setup the backend server:
 ```
-$ uvicorn main:app --reload
+uvicorn main:app --reload 
 ```
