@@ -1,13 +1,13 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.params import Body
 from fastapi.responses import HTMLResponse
-
+import json
 from fastapi.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 
-from model import Todo
+from model import Todo, UpdateTodo
 from controller import fetch_user_todo, fetch_all_todos, create_todo, update_todo, remove_todo
 from config import settings
-from todo.routers import router as todo_router
 
 
 app = FastAPI()
@@ -35,8 +35,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(todo_router, tags=["todo"], prefix="/api")
-
 
 @app.get("/", response_class=HTMLResponse)
 async def root_page():
@@ -57,7 +55,7 @@ async def get_todo():
 
 
 @app.get("/api/todo/{todo_name}", response_model=Todo)
-async def get_todo_by_title(todo_name):
+async def get_todo_by_todo_name(todo_name):
     response = await fetch_user_todo(todo_name)
     if response:
         return response
@@ -73,12 +71,13 @@ async def post_todo(todo: Todo):
     raise HTTPException(400, "Please check with server or post body.")
 
 
-@app.put("/api/todo/{title}/", response_model=Todo)
-async def put_todo(title: str, desc: str):
-    response = await update_todo(title, desc)
+@app.put("/api/todo/{todo_name}", response_model=Todo)
+async def put_todo(todo_name: str, payload: UpdateTodo = Body(...)):
+    payload = {k: v for k, v in payload.dict().items() if v is not None}
+    response = await update_todo(todo_name, payload)
     if response:
         return response
-    raise HTTPException(404, f"There is no todo with the title {title}")
+    raise HTTPException(404, f"There is no todo with the title {todo_name}")
 
 
 @app.delete("/api/todo/{todo_name}")

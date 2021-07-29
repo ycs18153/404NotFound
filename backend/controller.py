@@ -1,5 +1,6 @@
 import motor.motor_asyncio
 from model import Todo
+from fastapi.encoders import jsonable_encoder
 
 client = motor.motor_asyncio.AsyncIOMotorClient(
     'mongodb+srv://admin:admin@cluster0.gitsk.mongodb.net/myFirstDatabase?retryWrites=true')
@@ -29,9 +30,9 @@ async def create_todo(todo):
     return document
 
 
-async def update_todo(title, desc):
-    await collection.update_one({"title": title}, {"$set": {"description": desc}})
-    document = await collection.find_one({"title": title})
+async def update_todo(todo_name, payload):
+    await collection.update_one({"todo_name": todo_name}, {"$set": payload})
+    document = await collection.find_one({"todo_name": todo_name})
     return document
 
 
