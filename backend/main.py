@@ -54,19 +54,12 @@ async def get_todo():
     return response
 
 
-# @app.get("/api/todo/{todo_name}", response_model=Todo)
-# async def get_todo_by_todo_name(todo_name):
-#     response = await fetch_user_todo(todo_name)
-#     if response:
-#         return response
-#     raise HTTPException(404, f"There is no todo with the title {todo_name}")
-
-@app.get("/api/todo/{user_id}", response_model=Todo)
-async def get_todo_by_user_id(user_id):
-    response = await fetch_user_todo(user_id)
+@app.get("/api/todo/{todo_name}", response_model=Todo)
+async def get_todo_by_todo_name(todo_name):
+    response = await fetch_user_todo(todo_name)
     if response:
         return response
-    raise HTTPException(404, f"This user doesn't have any Todo")
+    raise HTTPException(404, f"There is no todo with the title {todo_name}")
 
 
 @app.post("/api/todo/", response_model=Todo)
