@@ -1,3 +1,4 @@
+from model import web
 from fastapi import FastAPI, HTTPException
 from fastapi.params import Body
 from fastapi.responses import HTMLResponse
@@ -7,6 +8,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 
 from model import Todo, UpdateTodo
 from controller import fetch_user_todo, fetch_all_todos, create_todo, update_todo, remove_todo
+from controller import get_tsmc_url
 from config import settings
 
 
@@ -34,6 +36,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# region @To-do list CRUD operations
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -86,3 +90,14 @@ async def delete_todo(todo_name):
     if response:
         return "Successfully deleted todo"
     raise HTTPException(404, f"There is no todo with the title {todo_name}")
+# endregion
+
+# region @myeHR api
+
+
+@app.get("/api/myehr/{web_name}", response_model=web)
+async def get_tsmc_website(web_name):
+    response = await get_tsmc_url(web_name)
+    if response:
+        return response
+    raise HTTPException(404, f"There is no website with the title {web_name}")
