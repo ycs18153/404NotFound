@@ -2,7 +2,8 @@ import motor.motor_asyncio
 from model import Todo
 from fastapi.encoders import jsonable_encoder
 
-client = motor.motor_asyncio.AsyncIOMotorClient('mongodb+srv://admin:admin@cluster0.gitsk.mongodb.net/myFirstDatabase?retryWrites=true')
+client = motor.motor_asyncio.AsyncIOMotorClient(
+    'mongodb+srv://admin:admin@cluster0.gitsk.mongodb.net/myFirstDatabase?retryWrites=true')
 
 database = client.myFirstDatabase
 # TodoList
@@ -38,3 +39,9 @@ async def update_todo(todo_name, payload):
 async def remove_todo(todo_name):
     await collection.delete_one({"todo_name": todo_name})
     return True
+
+# region @myeHR API
+
+async def get_tsmc_url(web_name):
+    document = await database.myehr.find_one({"name": web_name})
+    return document
