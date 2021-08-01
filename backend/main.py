@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 
 from model import Todo, UpdateTodo
-from controller import fetch_user_todo, fetch_all_todos, create_todo, update_todo, remove_todo
+from controller import fetch_user_todo_by_date, fetch_all_todos, create_todo, update_todo, remove_todo
 from controller import get_tsmc_url
 from config import settings
 
@@ -51,19 +51,24 @@ async def root_page():
         </body>
     </html>"""
 
-
-@app.get("/api/todo/")
-async def get_todo():
-    response = await fetch_all_todos()
-    return response
+# Get all todos by employee ID
 
 
-@app.get("/api/todo/{todo_name}", response_model=Todo)
-async def get_todo_by_todo_name(todo_name):
-    response = await fetch_user_todo(todo_name)
+@app.get("/api/todo/{employee_id}", response_model=Todo)
+async def get_todo_by_employee_id(employee_id):
+    response = await fetch_all_todos(employee_id)
     if response:
         return response
-    raise HTTPException(404, f"There is no todo with the title {todo_name}")
+    raise HTTPException(
+        404, f"There is no employee with the ID: {employee_id}")
+
+# # Get all todos by date
+# @app.get("/api/todo/{employee_id}/{date}", response_model=Todo)
+# async def get_todo_by_employee_id_and_date(todo_name):
+#     response = await fetch_user_todo_by_date(todo_name)
+#     if response:
+#         return response
+#     raise HTTPException(404, f"There is no todo with the title {todo_name}")
 
 
 @app.post("/api/todo/", response_model=Todo)
@@ -75,18 +80,18 @@ async def post_todo(todo: Todo):
     raise HTTPException(400, "Please check with server or post body.")
 
 
-@app.put("/api/todo/{todo_name}", response_model=Todo)
-async def put_todo(todo_name: str, payload: UpdateTodo = Body(...)):
+@app.put("/api/todo/{employee_id}/{todo_name}", response_model=Todo)
+async def put_todo(employee_id: str, todo_name: str, payload: UpdateTodo = Body(...)):
     payload = {k: v for k, v in payload.dict().items() if v is not None}
-    response = await update_todo(todo_name, payload)
+    response = await update_todo(employee_id, todo_name, payload)
     if response:
         return response
     raise HTTPException(404, f"There is no todo with the title {todo_name}")
 
 
-@app.delete("/api/todo/{todo_name}")
-async def delete_todo(todo_name):
-    response = await remove_todo(todo_name)
+@app.delete("/api/todo/{employee_id}/{todo_name}")
+async def delete_todo(employee_id, todo_name):
+    response = await remove_todo(employee_id, todo_name)
     if response:
         return "Successfully deleted todo"
     raise HTTPException(404, f"There is no todo with the title {todo_name}")
