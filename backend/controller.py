@@ -52,15 +52,22 @@ async def create_todo(todo):
     return document
 
 
-async def update_todo(employee_id, todo_name, payload):
+async def update_todo(user_id, todo_name, payload):
     todo_name = todo_name.replace('%20', ' ')
+
+    employee_id = mapping_employee_id(user_id)
+
+
     todo_collection.update_one({"employee_id": employee_id, "todo_name": todo_name}, {"$set": payload})
     document = await todo_collection.find_one({"todo_name": todo_name})
     return document
 
 
-async def remove_todo(employee_id, todo_name):
+async def remove_todo(user_id, todo_name):
     todo_name = todo_name.replace('%20', ' ')
+
+    employee_id = mapping_employee_id(user_id)
+
     todo_collection.delete_one({"employee_id": employee_id, "todo_name": todo_name})
     return True
 

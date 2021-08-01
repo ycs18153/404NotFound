@@ -93,18 +93,18 @@ async def post_todo(todo: Todo):
     raise HTTPException(400, "Please check with server or post body.")
 
 
-@app.put("/api/todo/{employee_id}/{todo_name}", response_model=Todo)
-async def put_todo(employee_id: str, todo_name: str, payload: UpdateTodo = Body(...)):
+@app.put("/api/todo/{user_id}/{todo_name}", response_model=Todo)
+async def put_todo(user_id: str, todo_name: str, payload: UpdateTodo = Body(...)):
     payload = {k: v for k, v in payload.dict().items() if v is not None}
-    response = await update_todo(employee_id, todo_name, payload)
+    response = await update_todo(user_id, todo_name, payload)
     if response:
         return response
     raise HTTPException(404, f"There is no todo with the title {todo_name}")
 
 
-@app.delete("/api/todo/{employee_id}/{todo_name}")
-async def delete_todo(employee_id, todo_name):
-    response = await remove_todo(employee_id, todo_name)
+@app.delete("/api/todo/{user_id}/{todo_name}")
+async def delete_todo(user_id, todo_name):
+    response = await remove_todo(user_id, todo_name)
     if response:
         return "Successfully deleted todo"
     raise HTTPException(404, f"There is no todo with the title {todo_name}")
