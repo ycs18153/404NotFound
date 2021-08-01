@@ -6,8 +6,9 @@ import json
 from fastapi.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 
-from model import Todo, UpdateTodo
+from model import Todo, UpdateTodo, EmployeeId
 from controller import fetch_user_todo_by_date, fetch_all_todos, create_todo, update_todo, remove_todo
+from controller import create_emplyee_id
 from controller import get_tsmc_url
 from config import settings
 
@@ -51,14 +52,26 @@ async def root_page():
         </body>
     </html>"""
 
-# Get all todos by employee ID
 
-
-@app.get("/api/todo/{employee_id}", response_model=Todo)
-async def get_todo_by_employee_id(employee_id):
-    response = await fetch_all_todos(employee_id)
+@app.post("/api/employee-id/", response_model=EmployeeId)
+async def post_todo(employee_id: EmployeeId):
+    print(f'post body: {employee_id.dict()}')
+    response = await create_emplyee_id(employee_id.dict())
     if response:
         return response
+    raise HTTPException(400, "Please check with server or post body.")
+
+# Get all todos by employee ID
+@app.get("/api/todo/{user_id}")
+def get_todo_by_employee_id(user_id):
+    response = fetch_all_todos(user_id)
+
+    resp = []
+    for i in response:
+        resp.append(i)
+
+    if resp:
+        return resp
     raise HTTPException(
         404, f"There is no employee with the ID: {employee_id}")
 

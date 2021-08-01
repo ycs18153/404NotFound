@@ -10,8 +10,10 @@ class Todo(BaseModel):
     todo_update_date: str
     todo_completed: bool = False
     employee_id: str
-    line_user_id: str
-    teams_user_id: str
+
+class EmployeeId(BaseModel):
+    employee_id: str
+    user_id: str
 
 
 class UpdateTodo(BaseModel):
@@ -28,3 +30,4 @@ class UpdateTodo(BaseModel):
 class web(BaseModel):
     name: str
     url: str
+
