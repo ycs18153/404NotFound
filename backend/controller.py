@@ -6,7 +6,8 @@ import pymongo
 
 # client = motor.motor_asyncio.AsyncIOMotorClient(
 #     'mongodb+srv://admin:admin@cluster0.gitsk.mongodb.net/myFirstDatabase?retryWrites=true')
-client = pymongo.MongoClient('mongodb+srv://admin:admin@cluster0.gitsk.mongodb.net/myFirstDatabase?retryWrites=true')
+client = pymongo.MongoClient(
+    'mongodb+srv://admin:admin@cluster0.gitsk.mongodb.net/myFirstDatabase?retryWrites=true')
 
 
 database = client.myFirstDatabase
@@ -16,7 +17,6 @@ todo_collection = database.todo
 myeHR_collection = database.myehr
 employee_id_collection = database.employee_id_mapping
 
-# [BUG] Description: Needs to return all of todos that the date is matched
 
 async def create_emplyee_id(employee_id):
     document = employee_id
@@ -29,19 +29,22 @@ async def fetch_user_todo_by_date(todo_name):
     return document
 
 
-# [BUG]: Needs to return all of todos that the person whose employee_id is matched
 def mapping_employee_id(user_id):
-
     id_info = employee_id_collection.find_one({"user_id": user_id})
     employee_id = id_info.get('employee_id')
     print(f'Query employee id: {employee_id}')
 
     return employee_id
 
+# [BUG] 需按照時間排序，並過濾掉 todo_completed = true 的 record
+
+
 def fetch_all_todos(user_id):
 
     employee_id = mapping_employee_id(user_id)
-    document = todo_collection.find({"employee_id": employee_id}, {'_id': False})
+    print(employee_id)
+    document = todo_collection.find(
+        {"employee_id": employee_id}, {'_id': False})
 
     return document
 
@@ -57,9 +60,10 @@ async def update_todo(user_id, todo_name, payload):
 
     employee_id = mapping_employee_id(user_id)
 
-
-    todo_collection.update_one({"employee_id": employee_id, "todo_name": todo_name}, {"$set": payload})
-    document = await todo_collection.find_one({"todo_name": todo_name})
+    todo_collection.update_one(
+        {"employee_id": employee_id, "todo_name": todo_name}, {"$set": payload})
+    document = todo_collection.find_one(
+        {"todo_name": todo_name}, {'todo_id': False})
     return document
 
 
@@ -68,11 +72,20 @@ async def remove_todo(user_id, todo_name):
 
     employee_id = mapping_employee_id(user_id)
 
-    todo_collection.delete_one({"employee_id": employee_id, "todo_name": todo_name})
+    todo_collection.delete_one(
+        {"employee_id": employee_id, "todo_name": todo_name})
     return True
 
 
 # region @myeHR API
 async def get_tsmc_url(web_name):
-    document = myeHR_collection.find_one({"name": web_name})
+    document = myeHR_collection.find_one({"name": web_name}, {'_id': False})
+    return document
+
+# for Todolist Web
+
+
+def fetch_all_todos_by_employee_id(employee_id):
+    document = todo_collection.find(
+        {"employee_id": employee_id}, {'_id': False})
     return document
