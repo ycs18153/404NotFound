@@ -49,21 +49,23 @@ def fetch_all_todos(user_id):
     return document
 
 
-async def create_todo(todo):
+async def create_todo(todo, user_id):
     document = todo
+    employeeId = employee_id_collection.find_one({"user_id": user_id})
+    document.employee_id = employeeId.get("employee_id") 
     result = todo_collection.insert_one(document)
     return document
 
 
-async def update_todo(user_id, todo_name, payload):
-    todo_name = todo_name.replace('%20', ' ')
+async def update_todo(user_id, todo_id, payload):
+    # todo_name = todo_name.replace('%20', ' ')
 
     employee_id = mapping_employee_id(user_id)
 
     todo_collection.update_one(
-        {"employee_id": employee_id, "todo_name": todo_name}, {"$set": payload})
+        {"employee_id": employee_id, "todo_id": todo_id}, {"$set": payload})
     document = todo_collection.find_one(
-        {"todo_name": todo_name}, {'todo_id': False})
+        {"employee_id": employee_id}, {'todo_id': False})
     return document
 
 
@@ -78,8 +80,8 @@ async def remove_todo(user_id, todo_name):
 
 
 # region @myeHR API
-async def get_tsmc_url(web_name):
-    document = myeHR_collection.find_one({"name": web_name}, {'_id': False})
+async def get_tsmc_url():
+    document = myeHR_collection.find({'_id': False})
     return document
 
 # for Todolist Web
