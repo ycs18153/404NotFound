@@ -1,17 +1,21 @@
+from threading import setprofile
 from pydantic import BaseModel
 import datetime
 from typing import Optional
 from uuid import UUID, uuid4
+import random
+import string
 
 
 class Todo(BaseModel):
-    todo_id: UUID = uuid4()
+    todo_id: str = ''.join(random.choices(
+        string.ascii_letters + string.digits, k=10))
     todo_name: str
     todo_date: str
     todo_contents: Optional[str]
     todo_update_date: str
     todo_completed: bool = False
-    employee_id: str
+    employee_id: Optional[str]
 
 
 class EmployeeId(BaseModel):
@@ -20,6 +24,7 @@ class EmployeeId(BaseModel):
 
 
 class UpdateTodo(BaseModel):
+    todo_id: Optional[str]
     todo_name: Optional[str]
     todo_date: Optional[str]
     todo_contents: Optional[str]

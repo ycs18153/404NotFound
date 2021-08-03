@@ -87,9 +87,9 @@ def get_todo_by_employee_id(user_id):
 
 
 @app.post("/api/todo/{user_id}", response_model=Todo)
-async def post_todo(todo: Todo, user_id: str):
+async def post_todo(user_id: str, todo: Todo):
     print(f'post body: {todo.dict()}')
-    response = await create_todo(todo.dict(), user_id)
+    response = await create_todo(user_id, todo.dict())
     if response:
         return response
     raise HTTPException(400, "Please check with server or post body.")
@@ -100,26 +100,31 @@ async def put_todo(user_id: str, todo_id: str, payload: UpdateTodo = Body(...)):
     payload = {k: v for k, v in payload.dict().items() if v is not None}
     response = await update_todo(user_id, todo_id, payload)
     if response:
+        print(f'response: {response}')
         return response
     raise HTTPException(404, f"There is no todo with the title {todo_id}")
 
 
-@app.delete("/api/todo/{user_id}/{todo_name}")
-async def delete_todo(user_id, todo_name):
-    response = await remove_todo(user_id, todo_name)
+@app.delete("/api/todo/{user_id}/{todo_id}")
+async def delete_todo(user_id, todo_id):
+    response = await remove_todo(user_id, todo_id)
     if response:
         return "Successfully deleted todo"
-    raise HTTPException(404, f"There is no todo with the title {todo_name}")
+    raise HTTPException(404, f"There is no todo with the id: {todo_id}")
 # endregion
 
 # region @myeHR api
 
 
-@app.get("/api/myehr/", response_model=Web)
+@app.get("/api/myehr")
 async def get_tsmc_website():
     response = await get_tsmc_url()
-    if response:
-        return response
+    resp = []
+    for i in response:
+        resp.append(i)
+
+    if resp:
+        return resp
     raise HTTPException(404, f"There is no website!")
 
 # For Todolist Web

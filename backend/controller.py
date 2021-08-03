@@ -2,6 +2,7 @@ import motor.motor_asyncio
 from model import Todo
 from fastapi.encoders import jsonable_encoder
 import pymongo
+import json
 
 
 # client = motor.motor_asyncio.AsyncIOMotorClient(
@@ -49,19 +50,17 @@ def fetch_all_todos(user_id):
     return document
 
 
-async def create_todo(todo, user_id):
+async def create_todo(user_id, todo):
     document = todo
     employeeId = employee_id_collection.find_one({"user_id": user_id})
-    document.employee_id = employeeId.get("employee_id") 
+    document["employee_id"] = employeeId["employee_id"]
     result = todo_collection.insert_one(document)
     return document
 
 
 async def update_todo(user_id, todo_id, payload):
     # todo_name = todo_name.replace('%20', ' ')
-
     employee_id = mapping_employee_id(user_id)
-
     todo_collection.update_one(
         {"employee_id": employee_id, "todo_id": todo_id}, {"$set": payload})
     document = todo_collection.find_one(
@@ -69,19 +68,19 @@ async def update_todo(user_id, todo_id, payload):
     return document
 
 
-async def remove_todo(user_id, todo_name):
-    todo_name = todo_name.replace('%20', ' ')
+async def remove_todo(user_id, todo_id):
+    # todo_name = todo_name.replace('%20', ' ')
 
     employee_id = mapping_employee_id(user_id)
 
     todo_collection.delete_one(
-        {"employee_id": employee_id, "todo_name": todo_name})
+        {"employee_id": employee_id, "todo_id": todo_id})
     return True
 
 
 # region @myeHR API
 async def get_tsmc_url():
-    document = myeHR_collection.find({'_id': False})
+    document = myeHR_collection.find({}, {'_id': False})
     return document
 
 # for Todolist Web
