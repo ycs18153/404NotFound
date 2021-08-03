@@ -105,12 +105,12 @@ async def put_todo(user_id: str, todo_id: str, payload: UpdateTodo = Body(...)):
     raise HTTPException(404, f"There is no todo with the title {todo_id}")
 
 
-@app.delete("/api/todo/{user_id}/{todo_name}")
-async def delete_todo(user_id, todo_name):
-    response = await remove_todo(user_id, todo_name)
+@app.delete("/api/todo/{user_id}/{todo_id}")
+async def delete_todo(user_id, todo_id):
+    response = await remove_todo(user_id, todo_id)
     if response:
         return "Successfully deleted todo"
-    raise HTTPException(404, f"There is no todo with the title {todo_name}")
+    raise HTTPException(404, f"There is no todo with the id: {todo_id}")
 # endregion
 
 # region @myeHR api

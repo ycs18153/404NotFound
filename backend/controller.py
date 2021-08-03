@@ -68,13 +68,13 @@ async def update_todo(user_id, todo_id, payload):
     return document
 
 
-async def remove_todo(user_id, todo_name):
-    todo_name = todo_name.replace('%20', ' ')
+async def remove_todo(user_id, todo_id):
+    # todo_name = todo_name.replace('%20', ' ')
 
     employee_id = mapping_employee_id(user_id)
 
     todo_collection.delete_one(
-        {"employee_id": employee_id, "todo_name": todo_name})
+        {"employee_id": employee_id, "todo_id": todo_id})
     return True
 
 
