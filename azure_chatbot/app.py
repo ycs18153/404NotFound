@@ -1,7 +1,7 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
-import sys
+import sys,os
 import traceback
 from datetime import datetime
 
@@ -77,11 +77,16 @@ async def messages(req: Request) -> Response:
     return Response(status=201)
 
 
+
 APP = web.Application(middlewares=[aiohttp_error_middleware])
 APP.router.add_post("/api/messages", messages)
 
+
+
 if __name__ == "__main__":
     try:
-        web.run_app(APP, host="localhost", port=CONFIG.PORT)
+        # web.run_app(APP, host="localhost", port=CONFIG.PORT)
+        port = os.getenv('PORT', default=CONFIG.PORT)
+        web.run_app(APP,port=port)
     except Exception as error:
         raise error
