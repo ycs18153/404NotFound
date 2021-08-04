@@ -86,7 +86,8 @@ async def get_tsmc_url():
 # for Todolist Web
 
 
-def fetch_all_todos_by_employee_id(employee_id):
-    document = todo_collection.find(
+def fetch_userID_with_employeeID(employee_id):
+
+    document = employee_id_collection.find_one(
         {"employee_id": employee_id}, {'_id': False})
     return document

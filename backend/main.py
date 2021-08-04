@@ -8,7 +8,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 
 from model import Todo, UpdateTodo, EmployeeId
 from controller import fetch_user_todo_by_date, fetch_all_todos, create_todo, update_todo, remove_todo
-from controller import create_emplyee_id, fetch_all_todos_by_employee_id
+from controller import create_emplyee_id, fetch_userID_with_employeeID
 from controller import get_tsmc_url
 from config import settings
 
@@ -132,11 +132,8 @@ async def get_tsmc_website():
 
 @app.get("/api/todo/web/{employee_id}")
 def fetch_all_todo_for_web(employee_id):
-    response = fetch_all_todos_by_employee_id(employee_id)
-    resp = []
-    for i in response:
-        resp.append(i)
-
-    if resp:
-        return resp
+    response = fetch_userID_with_employeeID(employee_id)
+    if response:
+        res = response["user_id"]
+        return res
     raise HTTPException(404, f"There is no employee id with {employee_id}")
