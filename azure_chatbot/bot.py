@@ -5,7 +5,6 @@ from botbuilder.core import ActivityHandler, TurnContext, CardFactory, MessageFa
 from botbuilder.schema import ChannelAccount, HeroCard, CardAction, CardImage, ActionTypes, Attachment, Activity, ActivityTypes
 from botbuilder.schema.teams import TeamInfo, TeamsChannelAccount
 from botbuilder.core.teams import TeamsActivityHandler, TeamsInfo
-from botbuilder.core.bot_state import BotState
 import requests
 import json
 import copy
@@ -15,6 +14,7 @@ from addTodoCard import *
 from addOrUpdateResultCard import *
 from myEhrCard import *
 from deleteCard import *
+from reminderCard import *
 
 
 def create_hero_card() -> Attachment:
@@ -38,6 +38,7 @@ class MyBot(ActivityHandler):
 
     async def on_message_activity(self, turn_context: TurnContext):
         print('turn_context.activity:\n',turn_context.activity)
+
         paged_members = []
         continuation_token = None       
         while True:
@@ -52,7 +53,10 @@ class MyBot(ActivityHandler):
         for m in paged_members: 
             print('paged_members:  ',m.as_dict())
         print()
-        
+
+        print('turn_context_from_property: \n',turn_context.activity.from_property.as_dict())        
+        print('turn_context_conversation: \n',turn_context.activity.conversation.as_dict())
+        print('turn_context_recipient: \n',turn_context.activity.recipient.as_dict())
         # try:
         #     member = await TeamsInfo.get_member(
         #         turn_context, turn_context.activity.from_property.id
@@ -92,11 +96,11 @@ class MyBot(ActivityHandler):
                 result=requests.post('https://tsmcbot-404notfound.du.r.appspot.com/api/employee-id',json=data)
                 if result.status_code == requests.codes.ok:
                 # response
-                  contextToReturn = '恭喜您，添加成功! \n\n 請輸入 "help"，來查看更多服務\n\n 輸入"查看代辦事項"，查看代辦事項\n\n s輸入"新增代辦事項"，來新增TodoList\n\n  輸入"tsmc"，查看網頁的url'
+                  contextToReturn = '恭喜您，添加成功! \n\n 請輸入 "help"，來查看更多服務\n\n 輸入"查看代辦事項"，查看代辦事項\n\n 輸入"新增代辦事項"，來新增TodoList\n\n  輸入"tsmc"，查看網頁的url'
                 else: 
                   contextToReturn ='工號添加失敗，請再嘗試一次或聯絡IT help desk'
             elif turn_context.activity.text == 'help':
-                contextToReturn = '輸入"工號_XXXXXX  (舉例)工號_120734"，新增工號以方便連結 teams, line 及 web 的服務\n\n 輸入"查看代辦事項"，查看代辦事項\n\n 輸入"tsmc"，查看網頁的url\n\n 輸入"新增代辦事項"，新增代辦事項\n\n'
+                contextToReturn = '輸入"工號_XXXXXX  (舉例)工號_120734"，新增工號以方便連結 teams, line 及 web 的服務\n\n 輸入"查看代辦事項"，查看代辦事項\n\n 輸入"新增代辦事項"，新增代辦事項\n\n 輸入"tsmc"，查看網頁的url\n\n'
             elif '新增代辦事項' in turn_context.activity.text: #turn_context.activity.text == '新增代辦事項':
                 contextToReturn = MessageFactory.attachment(Attachment(content_type='application/vnd.microsoft.card.adaptive',
                                         content=copy.deepcopy(addToDoListAdapCard)))
@@ -115,8 +119,9 @@ class MyBot(ActivityHandler):
             # elif turn_context.activity.text == 'adaptive':
             #     # contextToReturn =MessageFactory.attachment(Attachment(content_type='application/vnd.microsoft.card.adaptive',
             #     #                           content=adapCard))
+            #     task={"todo_id": "123123", "todo_name": "test1", "todo_date": "2021-07-30 20:08", "todo_contents": "contents,contents contents,contents contents,contents contents,contents contents,contents", "todo_completed": True}
             #     contextToReturn = MessageFactory.attachment(Attachment(
-            #         content_type='application/vnd.microsoft.card.adaptive', content=testCard))
+            #         content_type='application/vnd.microsoft.card.adaptive', content=prepareReminderCard(task)))
             elif '查看代辦事項' in turn_context.activity.text:#turn_context.activity.text == '查看代辦事項'
                 # tasksInfo = [{"todo_id": "123123", "todo_name": "test1", "todo_date": "2021-07-30", "start_time": "20:08", "end_date": "2021-08-01",
                 # "end_time": "12:00", "todo_contents": "contents,contents", "todo_completed": True},
@@ -153,7 +158,7 @@ class MyBot(ActivityHandler):
                     # 將資料加入 POST 請求中
                     r = requests.post(f'https://tsmcbot-404notfound.du.r.appspot.com/api/todo/%s'%(userid), data = json.dumps(my_data))
                     if r.status_code == requests.codes.ok:
-                        contextToReturn = '你已成功新增 %s 至代辦事項，下一步您可以透過查詢代辦事項來查看您的清單。' % (
+                        contextToReturn = '你已成功新增 "%s" 至代辦事項，下一步您可以透過 "查看代辦事項" 來查看您的清單。' % (
                             turn_context.activity.value['todo_name'],)
                     else: 
                         print(r.status_code)

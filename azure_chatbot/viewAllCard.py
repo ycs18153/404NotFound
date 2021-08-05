@@ -31,17 +31,25 @@ singleTask= [{
                 {
                     "title": "項目日期",
                     "value": "2021-07-31"
-                },                
-                {
-                    "title": "項目內容及備註",
-                    "value": "xxxtask contentsxxx"  
                 },                        
                 {
                     "title": "完成",
                     "value": "False"
+                },                
+                {
+                    "title": "項目內容及備註",
+                    "value": "xxxtask contentsxxx"  
                 }
             ],
             "separator": True
+        },
+        {
+            "type": "TextBlock",
+            "text": "項目內容備註內容",
+            "wrap": True,
+            "id": "task contents__for long contents",
+            "separator": True,
+            "isVisible":False    
         },
         {
             "type": "ColumnSet",
@@ -116,14 +124,14 @@ singleTask_old= [{
                     "title": "End Time",
                     "value": "21:00",
                     "isVisible": False
-                },        
-                {
-                    "title": "項目內容及備註",
-                    "value": "xxxtask contentsxxx"  
                 },                        
                 {
                     "title": "完成",
                     "value": "False"
+                },        
+                {
+                    "title": "項目內容及備註",
+                    "value": "xxxtask contentsxxx"  
                 }
             ],
             "separator": True
@@ -194,11 +202,15 @@ def prepareViewAllCard(taskInfos):
         # task_template[0]["facts"][3]["value"]=task["start_time"]      
         # task_template[0]["facts"][4]["value"]=task["end_date"] 
         # task_template[0]["facts"][5]["value"]=task["end_time"]
-        task_template[0]["facts"][3]["value"]=task["todo_contents"]
-        task_template[0]["facts"][4]["value"]=task["todo_completed"]                             
-        
-        task_template[1]["columns"][0]["items"][0]["actions"][0]["data"].update(task)
-        task_template[1]["columns"][1]["items"][0]["actions"][0]["data"].update(task)
+        task_template[0]["facts"][3]["value"]=task["todo_completed"]  
+        if len(task["todo_contents"])<=21:                            
+            task_template[0]["facts"][4]["value"]=task["todo_contents"]
+        else:
+            task_template[0]["facts"][4]["value"]=" "
+            task_template[1]["text"]=task["todo_contents"]
+            task_template[1]["isVisible"]=True
+        task_template[2]["columns"][0]["items"][0]["actions"][0]["data"].update(task)
+        task_template[2]["columns"][1]["items"][0]["actions"][0]["data"].update(task)
         
         cardReturn["body"]=cardReturn["body"]+task_template      
         

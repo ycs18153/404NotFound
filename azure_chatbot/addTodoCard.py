@@ -48,7 +48,8 @@ addToDoListAdapCard={
                   "spacing": "none",
                   "text": "Created {{DATE(2021-08-01T06:08:39Z, SHORT)}}",
                   "isSubtle": True,
-                  "wrap": True
+                  "wrap": True,
+                  "isVisible": False
                 }
               ]
             }
