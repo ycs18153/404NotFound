@@ -68,8 +68,7 @@ BOT = MyBot(CONVERSATIONS_REFERENCE)
 async def send_proactive_message():
     while True:
         # global stop_threads
-        if STOP:
-            break
+
         time.sleep(10)
         current_time = time.localtime()
         result = time.strftime("%I:%M:%S %p", current_time)
@@ -98,7 +97,7 @@ async def messages(req: Request) -> Response:
         print(body)
         if body['text'] == 'stop':
             print(body['text'])
-            STOP = True
+            loop.stop()
     else:
         return Response(status=415)
 
@@ -111,6 +110,9 @@ async def messages(req: Request) -> Response:
     return Response(status=201)
 
 
+def run_it_forever(loop):
+    loop.run_forever()
+
 
 APP = web.Application(middlewares=[aiohttp_error_middleware])
 APP.router.add_post("/api/messages", messages)
@@ -119,9 +121,26 @@ APP.router.add_post("/api/messages", messages)
 
 if __name__ == "__main__":
 
-    STOP = False
+    # STOP = False
     _thread = threading.Thread(target=target_callback)
     _thread.start()
+
+    # loop = asyncio.get_event_loop()
+
+    global loop
+
+    # try:
+    #     loop = asyncio.new_event_loop()
+    #     asyncio.set_event_loop(loop)
+    #     loop.run_until_complete(send_proactive_message())
+
+    #     # loop.create_task(send_proactive_message())
+    #     thread = threading.Thread(target=run_it_forever, args=(loop,))
+    #     thread.start()
+    # finally:
+
+    #     asyncio.set_event_loop(None)
+    #     loop.close()
 
     try:
         # web.run_app(APP, host="localhost", port=CONFIG.PORT)
