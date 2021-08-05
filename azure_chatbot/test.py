@@ -33,12 +33,13 @@ access_token=response['access_token']
 channel_id='msteams'
 
 '''try to get conversation id'''
-# # userId='29:1lNWDIz8Jn0YgoFx8LTJWrkqchAJb1Vg0bJK-PvHxe2FHzNXzFHYaeA0P9j58qQyPVVUCKUfpbZlBNcepHMaajg'
+userId='29:1lNWDIz8Jn0YgoFx8LTJWrkqchAJb1Vg0bJK-PvHxe2FHzNXzFHYaeA0P9j58qQyPVVUCKUfpbZlBNcepHMaajg'
 usesrid_office='29:1htJmKwuNtPEggpMm5kJ73ht47oIbddUOeEh1r1DFpf7vJmh83_C7Q3sBnFcxS3EJv5hHqcu0Po3_-dMmfqnMfA'
 chiahao_usrid='29:1Wp-wm0z5gjBGyNBqmeAnHZVrEz_x8QNh-DQKlIgNuVB59ACaKVJql-cQz2n6IixsodQs12DorLl9c7Rbwi4e9w'
 teams_appid='30eba4f2-6e15-458b-9fdf-f8bbf25efb4f'
 botId='28:30eba4f2-6e15-458b-9fdf-f8bbf25efb4f'
-tenant_id='9255f64b-1818-42e5-ad78-f619a9a7b1e7'
+# tenant_id='9255f64b-1818-42e5-ad78-f619a9a7b1e7'
+tenant_id='010281b3-d5d6-4bc8-b561-bf4794b97036'
 
 header={'Authorization': 'Bearer ' + access_token} #, 'content-type':'application/json'
 url=f'https://smba.trafficmanager.net/apac/v3/conversations'
@@ -50,7 +51,7 @@ payload={
     "isGroup": False,
     "members": [
         {
-            "id": chiahao_usrid,#usesrid_office,
+            "id": userId,#usesrid_office,
             "name": "借我測試一下"#"Yi Huang 黃懿"
         }
     ],
@@ -76,7 +77,7 @@ payload={
         # "name": "test conversation name"
    },
    "recipient": {
-        "id":chiahao_usrid,# usesrid_office,
+        "id":userId,# usesrid_office,
         # "name": "Testing"#"Yi Huang 黃懿"
     },
     "text": "測試測試  我心情好好  祝你也心情很好XDDDDDD",
@@ -86,7 +87,7 @@ response3 = requests.post(url, json=(payload), headers=header)
 response3=response3.content.decode('utf-8')
 print('response3',response3)
 
-'''
+
 url=f'https://smba.trafficmanager.net/apac/v3/conversations/%s/activities'%(conversation_id)
 payload={
     "type": "message",
@@ -99,7 +100,7 @@ payload={
         "name": "test conversation name"
    },
    "recipient": {
-        "id": usesrid_office,
+        "id": userId,
         "name": "Yi Huang 黃懿"
     },
     "attachments": [
@@ -140,5 +141,15 @@ payload={
 response4 = requests.post(url, json=(payload), headers=header)
 response4=response4.content.decode('utf-8')
 print('response3',response3)
-'''
 
+
+
+# cron-messages
+# [POST] https://xxxxxx/api/v1/cron-messages
+
+# tenant_id
+# {
+# 	"user_id": "test",
+# 	"employee_id": "test",
+# 	"tenant_id": "test"
+# }

@@ -129,3 +129,8 @@ def prepareReminderCard(taskToRemind):
       reminderCard["actions"][0]["card"]["body"][1]["isVisible"]=True
       reminderCard["actions"][0]["card"]["body"][0]["facts"][4]["value"]=" "
     return reminderCard
+  
+# accessTokenUrl='https://login.microsoftonline.com/botframework.com/oauth2/v2.0/token'
+
+# def sendReminder(todo, tenant_id, user_id):
+   
