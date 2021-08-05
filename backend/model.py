@@ -6,12 +6,13 @@ from uuid import UUID, uuid4
 import random
 import string
 
+from datetime import datetime
 
 class Todo(BaseModel):
     todo_id: str = ''.join(random.choices(
         string.ascii_letters + string.digits, k=10))
     todo_name: str
-    todo_date: str
+    todo_date: datetime
     todo_contents: Optional[str]
     todo_update_date: str
     todo_completed: bool = False
