@@ -22,6 +22,7 @@ class Todo(BaseModel):
 class EmployeeId(BaseModel):
     employee_id: str
     user_id: str
+    tenant_id: str = "NA"
 
 
 class UpdateTodo(BaseModel):
