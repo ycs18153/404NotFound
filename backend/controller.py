@@ -1,3 +1,4 @@
+from re import S
 import motor.motor_asyncio
 from model import Todo
 from fastapi.encoders import jsonable_encoder
@@ -44,9 +45,8 @@ def fetch_all_todos(user_id):
 
     employee_id = mapping_employee_id(user_id)
     print(employee_id)
-    document = todo_collection.find(
-        {"employee_id": employee_id}, {'_id': False}).sort('todo_date', pymongo.ASCENDING)
-
+    document = todo_collection.find({"$and": [{"employee_id": employee_id}, 
+                          {"todo_completed": False}]}, {'_id': False}).sort('todo_date', pymongo.ASCENDING)
     return document
 
 
