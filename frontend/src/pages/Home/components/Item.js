@@ -19,7 +19,6 @@ const Item = ({ todo_id, todo_name, todo_date, todo_update_date, todo_contents, 
             <h4>待辦事項：{todo_name}</h4>
             <h4>時間：{`${date} (${time})`}</h4>
             <h4>內容：{todo_contents}</h4>
-            <h3>{todo_id}</h3>
         </div>
         <button className='remove' onClick={del}> Delete </button>
     </div>
