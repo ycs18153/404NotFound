@@ -9,8 +9,7 @@ import string
 from datetime import datetime
 
 class Todo(BaseModel):
-    todo_id: str = ''.join(random.choices(
-        string.ascii_letters + string.digits, k=10))
+    todo_id: str = uuid4().hex
     todo_name: str
     todo_date: datetime
     todo_contents: Optional[str]
