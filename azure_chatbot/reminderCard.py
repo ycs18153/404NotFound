@@ -1,9 +1,12 @@
-import os, base64,copy
+import os, base64,copy,requests
 file = os.path.join(os.getcwd(), "winnie.jpg")
 image = open(file, 'rb')
 image_read = image.read()
 image_64_encode = base64.b64encode(image_read).decode()
 
+contentContainer={
+  "contentType": "application/vnd.microsoft.card.adaptive",
+  "content": ""}
 reminderTemplate={
   "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
   "type": "AdaptiveCard",
@@ -122,15 +125,17 @@ def prepareReminderCard(taskToRemind):
     reminderCard["actions"][0]["card"]["body"][0]["facts"][1]["value"]=taskToRemind["todo_name"]
     reminderCard["actions"][0]["card"]["body"][0]["facts"][2]["value"]=taskToRemind["todo_date"]
     reminderCard["actions"][0]["card"]["body"][0]["facts"][3]["value"]="True" if taskToRemind["todo_completed"] else"False"
-    if len(taskToRemind["todo_contents"])<=21: 
-      reminderCard["actions"][0]["card"]["body"][0]["facts"][4]["value"]=taskToRemind["todo_contents"]
-    else: 
-      reminderCard["actions"][0]["card"]["body"][1]["text"]=taskToRemind["todo_contents"]
-      reminderCard["actions"][0]["card"]["body"][1]["isVisible"]=True
-      reminderCard["actions"][0]["card"]["body"][0]["facts"][4]["value"]=" "
-    return reminderCard
+    if taskToRemind["todo_contents"]:
+      if len(taskToRemind["todo_contents"])<=21: 
+        reminderCard["actions"][0]["card"]["body"][0]["facts"][4]["value"]=taskToRemind["todo_contents"]
+      else: 
+        reminderCard["actions"][0]["card"]["body"][1]["text"]=taskToRemind["todo_contents"]
+        reminderCard["actions"][0]["card"]["body"][1]["isVisible"]=True
+        reminderCard["actions"][0]["card"]["body"][0]["facts"][4]["value"]=" "
+    container=copy.deepcopy(contentContainer)
+    container["content"]=reminderCard
+    return container
   
 # accessTokenUrl='https://login.microsoftonline.com/botframework.com/oauth2/v2.0/token'
 
-# def sendReminder(todo, tenant_id, user_id):
-   
+

@@ -411,7 +411,7 @@ updateCard={
         {
             "type": "Input.Toggle",
             "title": "已完成",
-            "value": "false",
+            "value": False,
             "id": "todo_completed",
             "separator": True,
         },
@@ -451,8 +451,8 @@ def prepareUpdateCard(singletask={"todo_id":"123123","todo_name":"test1","todo_d
     cardToReturn["body"][1]["text"]="項目_ID:  "+singletask["todo_id"]
     cardToReturn["body"][3]["value"]=singletask["todo_name"]
     cardToReturn["body"][5]["value"]=singletask["todo_date"]
-    cardToReturn["body"][6]["value"]=singletask["start_time"]
-    cardToReturn["body"][11]["value"]=singletask["todo_contents"]
+    cardToReturn["body"][6]["value"]=singletask["start_time"] 
+    cardToReturn["body"][11]["value"]=singletask["todo_contents"] if singletask["todo_contents"] else "   " 
     cardToReturn["body"][12]["value"]=True if singletask["todo_completed"] else False
     cardToReturn["body"][13]["items"][0]["actions"][0]["data"]["todo_id"]=singletask["todo_id"]
     # cardToReturn["body"][13]["items"][0]["actions"][0]["data"]["old_name"]=singletask["todo_id"]

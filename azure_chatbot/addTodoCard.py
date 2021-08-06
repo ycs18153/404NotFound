@@ -360,7 +360,8 @@ addToDoListAdapCard={
             "style": "text",
             "isMultiline": True,
             # "placeholder": "請輸入代辦事項內容",
-            "id": "todo_contents"
+            "id": "todo_contents",
+            "value": "    "
         },
         {
             "type": "Input.Toggle",

@@ -203,12 +203,13 @@ def prepareViewAllCard(taskInfos):
         # task_template[0]["facts"][4]["value"]=task["end_date"] 
         # task_template[0]["facts"][5]["value"]=task["end_time"]
         task_template[0]["facts"][3]["value"]=task["todo_completed"]  
-        if len(task["todo_contents"])<=21:                            
-            task_template[0]["facts"][4]["value"]=task["todo_contents"]
-        else:
-            task_template[0]["facts"][4]["value"]=" "
-            task_template[1]["text"]=task["todo_contents"]
-            task_template[1]["isVisible"]=True
+        if task["todo_contents"]:
+            if len(task["todo_contents"])<=21:                            
+                task_template[0]["facts"][4]["value"]=task["todo_contents"]
+            else:
+                task_template[0]["facts"][4]["value"]=" "
+                task_template[1]["text"]=task["todo_contents"]
+                task_template[1]["isVisible"]=True
         task_template[2]["columns"][0]["items"][0]["actions"][0]["data"].update(task)
         task_template[2]["columns"][1]["items"][0]["actions"][0]["data"].update(task)
         
