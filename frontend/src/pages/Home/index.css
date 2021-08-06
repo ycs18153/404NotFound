@@ -1,0 +1,61 @@
+.app {
+    margin: 1rem auto;
+    width: 50%;
+    min-width: 500px;
+    padding: 1.2rem;
+    border: 0.2rem groove rgb(0, 0, 0);
+    border-radius: 1rem;
+    box-sizing: border-box;
+}
+  
+input {
+    width: 100%;
+    height: 2rem;
+}
+
+.add {
+    margin-top: 1.5rem;
+    background-color: rgb(24, 125, 184);
+    color: #fff;
+    border: 0;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0.3rem;
+    font-size: 1.2rem;
+    border-radius: 2rem;
+}
+
+.add:hover {
+    box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.65);
+}
+
+.list {
+    padding-top: 20px;
+}
+
+.item {
+    width: 100%;
+    border-bottom: 1px dashed #000;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.remove {
+    border: 0;
+    background-color: rgb(212, 101, 101);
+    color: #fff;
+    padding: 10px;
+    width: 5rem;
+}
+
+.remove:hover {
+    border-radius: 0.5rem;
+    font-size: large;
+}
+
+h4 {
+    margin: 0.2rem 0;
+}
