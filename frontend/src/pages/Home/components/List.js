@@ -1,7 +1,7 @@
 import React from 'react';
 import Item from './Item'
 
-const List = ({ listData, workerId, setRefetch}) => {
+const List = ({ listData, workerId, setRefetch, setLoading}) => {
     return <div className='list'>
     {
         listData.map( item => {
@@ -16,6 +16,7 @@ const List = ({ listData, workerId, setRefetch}) => {
                     todo_contents={todo_contents}
                     workerId={workerId}
                     setRefetch={setRefetch}
+                    setLoading={setLoading}
                 />
             )
         } )

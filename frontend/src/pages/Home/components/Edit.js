@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { putData } from '../api/Api';
 
-const Edit = ({ workerId, setRefetch }) => {
+const Edit = ({ workerId, setRefetch, setLoading }) => {
     const [note, setNote] = useState("")
     function noteChange(event){
         setNote(event.target.value)
@@ -20,7 +20,7 @@ const Edit = ({ workerId, setRefetch }) => {
     }
 
     
-    function Add(){
+    async function Add(){
         if(note === ""){
             window.alert("請輸入記事！")
             return
@@ -42,7 +42,8 @@ const Edit = ({ workerId, setRefetch }) => {
         }
         //console.log(data);
         //console.log(JSON.stringify({ data }));
-        putData(data, workerId)
+        setLoading(true)
+        await putData(data, workerId)
         setRefetch(true)
         
         // clear input

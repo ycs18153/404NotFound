@@ -1,10 +1,10 @@
 import React from 'react';
 import { deleteData } from '../api/Api'
 
-const Item = ({ todo_id, todo_name, todo_date, todo_update_date, todo_contents, workerId, setRefetch}) => {
+const Item = ({ todo_id, todo_name, todo_date, todo_update_date, todo_contents, workerId, setRefetch, setLoading}) => {
 
     async function del(){
-        console.log('delete');
+        setLoading(true)
         await deleteData(workerId, todo_id)
         setRefetch(true)
     }

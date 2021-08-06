@@ -1,9 +1,9 @@
-/* div.loader-container {
+div.loader-container {
     justify-content: center;
     align-items: center;
     position: fixed;
-    top: 50%;
+    bottom: 30%;
     left: 50%;
     transform: translate(-50%, 0%);
     z-index: 100;
-  } */
+  }
