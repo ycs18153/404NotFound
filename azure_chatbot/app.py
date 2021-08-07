@@ -18,7 +18,7 @@ from botbuilder.schema import Activity, ActivityTypes
 
 from bot import MyBot
 from config import DefaultConfig
-from reminderCard import prepareReminderCard
+from cards.reminderCard import prepareReminderCard
 
 CONFIG = DefaultConfig()
 
