@@ -91,3 +91,8 @@ def fetch_userID_with_employeeID(employee_id):
     document = employee_id_collection.find_one(
         {"employee_id": employee_id}, {'_id': False})
     return document
+
+async def create_myehr(web):
+    document = web
+    result = myeHR_collection.insert_one(document)
+    return document
