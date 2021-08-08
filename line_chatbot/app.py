@@ -1,18 +1,22 @@
 from __future__ import unicode_literals
 import os
+import re
 from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import (MessageEvent, TextMessage,
-                            TextSendMessage, TemplateSendMessage, FlexSendMessage)
-# from magicMessage import carousel
+                            TextSendMessage, TemplateSendMessage, FlexSendMessage, ConfirmTemplate, URIAction, MessageAction, PostbackEvent)
 import configparser
+from linebot.models.events import Postback
 import requests
 import random
 import json
+import logging
 import datetime
+import copy
+from requests.api import delete
 from requests.exceptions import SSLError
-from magicMessage.carousel import todo, new_info, update_btn
+from magicMessage.carousel import todo, new_info
 
 app = Flask(__name__)
 
@@ -49,83 +53,80 @@ helpMessage = "`create` to create a task.\n" \
     + "`get id` to get the task's ID for operations later."
 
 
+@handler.add(PostbackEvent)
+def postbackReply(event):
+    data = event.postback.data
+    print(data)
+
+
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    if "read" in event.message.text:
+    if "工號_" in event.message.text:
+        employee_id = event.message.text.split("_")[1].strip()
+        payload = {
+            "employee_id": employee_id,
+            "user_id": event.source.user_id
+        }
+        response = requests.post(
+            f'https://tsmcbot-404notfound.du.r.appspot.com/api/employee-id', payload, timeout=5)
+        line_bot_api.reply_message(
+            event.reply_token, TextSendMessage(text=f'add user success! Now you can do `CRUD` operations'))
+
+    elif "read" in event.message.text:
         try:
             response = requests.get(
-                f'https://tsmcbot-404notfound.du.r.appspot.com/api/todo/{event.source.user_id}')
-            line_bot_api.reply_message(
-                event.reply_token, TextSendMessage(text=str(response.json())))
-        except:
+                f'https://tsmcbot-404notfound.du.r.appspot.com/api/todo/{event.source.user_id}', timeout=5)
+            each_todo = response.json()
+            todo_copy = add_carousel(each_todo)
+            message = FlexSendMessage(alt_text="todo list", contents=todo_copy)
+            line_bot_api.reply_message(event.reply_token, message)
+
+        except Exception as e:
+            logging.error('Error Msg: ',  exc_info=e)
             line_bot_api.reply_message(
                 event.reply_token, TextSendMessage(text="something wents wrong, please retry..."))
 
-    elif "update" in event.message.text:
-        try:
-            todo_json = {
-                'todo_contents': 'edit!'
-            }
-            todo_json = json.dumps(todo_json)
-            response = requests.put(
-                f'http://localhost:8000/api/todo/{event.source.user_id}/n9cJLY9jfl', todo_json)
-            print(f'response: {response.json()}')
-        except:
-            line_bot_api.reply_message(
-                event.reply_token, TextSendMessage(text="something wents wrong, please retry..."))
     elif "delete" in event.message.text:
         try:
+            print("delete!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
             todo_id = event.message.text.split(" ")[1].strip()
             requests.delete(
-                f'https://tsmcbot-404notfound.du.r.appspot.com/api/todo/{event.source.user_id}/{todo_id}')
+                f'https://tsmcbot-404notfound.du.r.appspot.com/api/todo/{event.source.user_id}/{todo_id}', timeout=5)
             response = requests.get(
-                f'https://tsmcbot-404notfound.du.r.appspot.com/api/todo/{event.source.user_id}')
-            line_bot_api.reply_message(
-                event.reply_token, TextSendMessage(text=f'delete success!\n{str(response.json())}'))
+                f'https://tsmcbot-404notfound.du.r.appspot.com/api/todo/{event.source.user_id}', timeout=5)
+            each_todo = response.json()
+            todo_copy = add_carousel(each_todo)
+            message = FlexSendMessage(alt_text="todo list", contents=todo_copy)
+            line_bot_api.push_message(
+                event.source.user_id, TextSendMessage(text='Delete success!'))
+            line_bot_api.reply_message(event.reply_token, message)
         except:
             line_bot_api.reply_message(
                 event.reply_token, TextSendMessage(text="something wents wrong, please retry..."))
 
-    elif "create task" in event.message.text:
-        try:
-            todo_json = {
-                "todo_name": "please",
-                "todo_date": "2021-8-6",
-                "todo_update_date": "2021-8-3",
-            }
-            todo_json = json.dumps(todo_json)
-            requests.post("http://localhost:8000/api/todo/%s" % event.source.user_id,
-                          todo_json)
 
-            line_bot_api.reply_message(
-                event.reply_token, TextSendMessage(text="create success!"))
-        except:
-            line_bot_api.reply_message(
-                event.reply_token, TextSendMessage(text="something wents wrong, please retry..."))
-    elif "help" in event.message.text:
-        line_bot_api.reply_message(
-            event.reply_token, TextSendMessage(text=helpMessage))
-    elif "test" in event.message.text:
-        try:
-            response = requests.get(
-                f'https://tsmcbot-404notfound.du.r.appspot.com/api/todo/{event.source.user_id}')
-            doc = response.json()
-            card_title = ['Todo ID', 'Todo Title', 'Todo Date',
-                          'Description', 'Update Date', 'Todo Status']
-            card_value = ['todo_id', 'todo_name', 'todo_date',
-                          'todo_contents', 'todo_update_date', 'todo_completed']
-            # for each_record in doc:
-            for i in range(6):
-                new_info["contents"][0]["text"] = card_title[i]
-                new_info["contents"][1]["text"] = doc[0]['todo_id']
-                new_info_copy = new_info.copy()
-                todo["body"]["contents"][2]["contents"].append(new_info_copy)
+def add_carousel(each_todo):
 
-            line_bot_api.reply_message(event.reply_token, messages=FlexSendMessage(
-                alt_text="測試訊息", contents=todo))
-        except:
-            line_bot_api.reply_message(
-                event.reply_token, TextSendMessage(text="something wents wrong, please retry..."))
+    todo_copy = {}
+    todo_copy = copy.deepcopy(todo)
+
+    for i in range(len(each_todo)):
+        new_info_copy = {}
+        new_info_copy = copy.deepcopy(new_info)
+        new_info_copy["header"]["contents"][1]["text"] = each_todo[i]["todo_id"]
+        new_info_copy["body"]["contents"][0]["contents"][1]["text"] = each_todo[i]["todo_name"]
+        new_info_copy["body"]["contents"][1]["contents"][1]["text"] = each_todo[i]["todo_date"][5:10] + \
+            " "+each_todo[i]["todo_date"][11:16]
+        new_info_copy["body"]["contents"][2]["contents"][1]["text"] = each_todo[i]["todo_contents"]
+        new_info_copy["body"]["contents"][3]["contents"][1]["text"] = str(
+            each_todo[i]["todo_update_date"])
+        new_info_copy["body"]["contents"][4]["contents"][1]["text"] = str(
+            each_todo[i]["todo_completed"])
+        new_info_copy["footer"]["contents"][1]["action"]["data"] = each_todo[i]["todo_id"]
+        new_info_copy["footer"]["contents"][1]["action"][
+            "text"] = f'delete {each_todo[i]["todo_id"]}'
+        todo_copy["contents"].append(new_info_copy)
+    return todo_copy
 
 
 if __name__ == "__main__":
