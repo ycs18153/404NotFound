@@ -253,10 +253,10 @@ bot.py 中的 on_message_activity() 修改成以下
 
 
 ## 亮眼技術
-* Adaptive Card:
+#### Adaptive Card
 透過包含button、輸入框的Card介面，提供使用者簡易直覺易操作的的環境
 ![](https://i.imgur.com/0QHJhQ3.png=200x200)
-* Sending Proactive Msg(主動推播訊息)
+#### Sending Proactive Msg(主動推播訊息)
     ==[**主要依照這篇的步驟**](https://github.com/microsoft/BotFramework-Services/issues/260)==
     1. Authorization
     > input: appid, app_password
