@@ -13,7 +13,7 @@ class Todo(BaseModel):
     todo_name: str
     todo_date: datetime
     todo_contents: Optional[str]
-    todo_update_date: str
+    todo_update_date: datetime
     todo_completed: bool = False
     employee_id: Optional[str]
 
@@ -29,7 +29,7 @@ class UpdateTodo(BaseModel):
     todo_name: Optional[str]
     todo_date: Optional[datetime]
     todo_contents: Optional[str]
-    todo_update_date: Optional[str]
+    todo_update_date: Optional[datetime]
     todo_completed: Optional[bool]
     employee_id: Optional[str]
 

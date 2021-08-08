@@ -6,9 +6,9 @@ import json
 from fastapi.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 
-from model import Todo, UpdateTodo, EmployeeId
+from model import Todo, UpdateTodo, EmployeeId, Web
 from controller import fetch_user_todo_by_date, fetch_all_todos, create_todo, update_todo, remove_todo
-from controller import create_emplyee_id, fetch_userID_with_employeeID
+from controller import create_emplyee_id, fetch_userID_with_employeeID,create_myehr
 from controller import get_tsmc_url
 from config import settings
 
@@ -137,3 +137,11 @@ def fetch_all_todo_for_web(employee_id):
         res = response["user_id"]
         return res
     raise HTTPException(404, f"There is no employee id with {employee_id}")
+
+@app.post("/api/myehr/", response_model=Web)
+async def new_myehr(web:Web):
+    print(f'post body: {web.dict()}')
+    response = await create_myehr(web.dict())
+    if response:
+        return response
+    raise HTTPException(400, "Please check with server or post body.")
