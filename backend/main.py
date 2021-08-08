@@ -28,6 +28,7 @@ async def shutdown_db_client():
 
 origins = [
     "https://tsmc-todolist.de.r.appspot.com",
+    "http://localhost:3000"
 ]
 
 app.add_middleware(
