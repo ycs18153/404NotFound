@@ -12,11 +12,11 @@ backend
 |   app.yaml
 |   Procfile
 │
-└───config
+└─── config
 │   │   __init__.py
 │   │   ...
 │   
-└───__pycache__
+└─── __pycache__
     │   ...
     |   ...
 ```
