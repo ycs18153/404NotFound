@@ -257,49 +257,39 @@ bot.py 中的 on_message_activity() 修改成以下
 透過包含button、輸入框的Card介面，提供使用者簡易直覺易操作的的環境
 ![](https://i.imgur.com/0QHJhQ3.png=200x200)
 ### Sending Proactive Msg(主動推播訊息)
-    ==[**主要依照這篇的步驟**](https://github.com/microsoft/BotFramework-Services/issues/260)==
-    1. Authorization
-    > input: appid, app_password
-    > return: access_token
-    2. Create conversation
-    > input: bot_id, user_id, tenantId, access_token in json format
-    > return: conversation_id
-    > 
-    * ["tenantId"須為其中一個屬性](https://stackoverflow.com/questions/48102932/microsoft-teams-bot-could-not-parse-tenant-id)
-    * [解釋BaseURI，也就是ServiceUrl](https://docs.microsoft.com/en-us/azure/bot-service/rest-api/bot-framework-rest-connector-api-reference?view=azure-bot-service-4.0#create-conversation)
-    > 那包json應該是其他語言寫法要夾帶的格式，python寫法serviceUrl直接是放在/v3/...前面
-    > 
-    > 每個bot的serviceUrl不一樣，要由activity送進來時的turncontext.activity裡面去找
 
-    ```
-            print('turn_context_from_property: \n',turn_context.activity.from_property.as_dict())        
-            print('turn_context_conversation: \n',turn_context.activity.conversation.as_dict())
-            print('turn_context_recipient: \n',turn_context.activity.recipient.as_dict())
-    ```
-    > as_dict()方法可以把bot framework 中的物件拆解開成json呈現出來
-    > 
-    3. Send msg: 
-    > input: bot_id, user_id, access_token in json format
-    > return: response for msg sent
+==[**主要依照這篇的步驟**](https://github.com/microsoft/BotFramework-Services/issues/260)==
+1. Authorization
+> input: appid, app_password
+> return: access_token
+2. Create conversation
+> input: bot_id, user_id, tenantId, access_token in json format
+> return: conversation_id
+> 
+* ["tenantId"須為其中一個屬性](https://stackoverflow.com/questions/48102932/microsoft-teams-bot-could-not-parse-tenant-id)
+* [解釋BaseURI，也就是ServiceUrl](https://docs.microsoft.com/en-us/azure/bot-service/rest-api/bot-framework-rest-connector-api-reference?view=azure-bot-service-4.0#create-conversation)
+> 那包json應該是其他語言寫法要夾帶的格式，python寫法serviceUrl直接是放在/v3/...前面
+> 
+> 每個bot的serviceUrl不一樣，要由activity送進來時的turncontext.activity裡面去找
 
-    > 將各種訊息在step3 送出，在json中要求的格式
-    > [Link1](https://docs.microsoft.com/en-us/azure/bot-service/rest-api/bot-framework-rest-connector-send-and-receive-messages?view=azure-bot-service-4.0)
-    > [Link2](https://docs.microsoft.com/en-us/azure/bot-service/rest-api/bot-framework-rest-connector-add-rich-cards?view=azure-bot-service-4.0)
-    > 中間還有其他的，需要自己點過去看
-* Deploy方式：
-開發時主要在local端起code，透過ngrok給一串外界可以連到的https的網址；deploy bot用過heroku及GCP的App engine，最後決定使用GCP為最終方案。
+```
+        print('turn_context_from_property: \n',turn_context.activity.from_property.as_dict())        
+        print('turn_context_conversation: \n',turn_context.activity.conversation.as_dict())
+        print('turn_context_recipient: \n',turn_context.activity.recipient.as_dict())
+```
+> as_dict()方法可以把bot framework 中的物件拆解開成json呈現出來
+> 
+3. Send msg: 
+> input: bot_id, user_id, access_token in json format
+> return: response for msg sent
 
+> 將各種訊息在step3 送出，在json中要求的格式
+> [Link1](https://docs.microsoft.com/en-us/azure/bot-service/rest-api/bot-framework-rest-connector-send-and-receive-messages?view=azure-bot-service-4.0)
+> [Link2](https://docs.microsoft.com/en-us/azure/bot-service/rest-api/bot-framework-rest-connector-add-rich-cards?view=azure-bot-service-4.0)
+> 中間還有其他的，需要自己點過去看
 
+### Deploy方式
 
-
-
+開發時主要在local端起code，透過ngrok給一串外界可以連到的https的網址；deploy bot時用過azure雲端服務、heroku及GCP的App engine，最後決定使用GCP為最終方案。
 
 
-
-
-
-
-
-
-
-### 
