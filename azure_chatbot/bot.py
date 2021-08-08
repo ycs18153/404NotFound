@@ -132,8 +132,12 @@ class MyBot(ActivityHandler):
                 tasksInfo=requests.get(f'https://tsmcbot-404notfound.du.r.appspot.com/api/todo/%s'%(userid))
                 if tasksInfo.status_code == requests.codes.ok:
                     tasksInfo=json.loads(tasksInfo.content.decode('utf-8'))
-                    contextToReturn = MessageFactory.attachment(Attachment(
-                        content_type='application/vnd.microsoft.card.adaptive', content=prepareViewAllCard(tasksInfo)))
+                    tasksInfoQueue=[tasksInfo[x:x+5] for x in range(0, len(tasksInfo),5)]
+                    for item in tasksInfoQueue:
+                        contextToReturn = MessageFactory.attachment(Attachment(
+                            content_type='application/vnd.microsoft.card.adaptive', content=prepareViewAllCard(item)))
+                        await turn_context.send_activity(contextToReturn)  
+                    return                  
                 else: 
                     contextToReturn ='目前沒有您的代辦事項，謝謝!!'
             else:
@@ -178,7 +182,7 @@ class MyBot(ActivityHandler):
 
                 elif turn_context.activity.value['card_request_type'] == 'delete_task':                    
                     data=turn_context.activity.value
-                    singletask ={"todo_id":data["todo_id"]}
+                    singletask ={"todo_id":data["todo_id"],"todo_name":data["todo_name"]}
                     print('singletask:\n',singletask)
                     contextToReturn =MessageFactory.attachment(Attachment(
                     content_type='application/vnd.microsoft.card.adaptive', content= deleteTask(singletask) ))
@@ -188,6 +192,7 @@ class MyBot(ActivityHandler):
                     r=requests.delete(f'https://tsmcbot-404notfound.du.r.appspot.com/api/todo/%s/%s'%(userid,data["todo_id"]))#,json=singletask
                     print('delete response: ', r.status_code)
                     contextToReturn='Todo List 項目ID: '+data["todo_id"]+' 資料成功刪除'
+                    
                 elif turn_context.activity.value['card_request_type'] =='cancel_delete_task':
                     data=turn_context.activity.value
                     contextToReturn='Todo List 項目ID: '+data["todo_id"]+' 資料未刪除'

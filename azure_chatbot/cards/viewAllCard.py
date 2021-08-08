@@ -65,8 +65,7 @@ singleTask= [{
                                     "type": "Action.Submit",
                                     "title": "更新項目",
                                     "data": {
-                                        "card_request_type": "update_task",
-                                        "task_id": "12342151"
+                                        "card_request_type": "update_task"
                                     }
                                 }
                             ]
@@ -84,8 +83,7 @@ singleTask= [{
                                     "type": "Action.Submit",
                                     "title": "刪除項目",
                                     "data": {
-                                        "card_request_type": "delete_task",
-                                        "task_id": "12342151"
+                                        "card_request_type": "delete_task"
                                     }
                                 }
                             ]
@@ -150,8 +148,7 @@ singleTask_old= [{
                                     "type": "Action.Submit",
                                     "title": "Update Task",
                                     "data": {
-                                        "card_request_type": "update_task",
-                                        "task_id": "12342151"
+                                        "card_request_type": "update_task"
                                     }
                                 }
                             ]
@@ -169,8 +166,7 @@ singleTask_old= [{
                                     "type": "Action.Submit",
                                     "title": "Delete Task",
                                     "data": {
-                                        "card_request_type": "delete_task",
-                                        "task_id": "12342151"
+                                        "card_request_type": "delete_task"
                                     }
                                 }
                             ]
@@ -212,7 +208,7 @@ def prepareViewAllCard(taskInfos):
                 task_template[1]["isVisible"]=True
         task_template[2]["columns"][0]["items"][0]["actions"][0]["data"].update(task)
         task_template[2]["columns"][1]["items"][0]["actions"][0]["data"].update(task)
-        
+        print('*********task_template for checking delete********',task_template)
         cardReturn["body"]=cardReturn["body"]+task_template      
         
     return cardReturn

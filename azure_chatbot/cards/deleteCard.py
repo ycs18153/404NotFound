@@ -41,8 +41,7 @@ deleteCard={
                                 "type": "Action.Submit",
                                 "title": "刪除",
                                 "data": {
-                                    "card_request_type": "confirm_delete_task",
-                                    "task_id": "12342151"
+                                    "card_request_type": "confirm_delete_task"
                                 }
                             }
                         ]
@@ -60,8 +59,7 @@ deleteCard={
                                 "type": "Action.Submit",
                                 "title": "取消",
                                 "data": {
-                                    "card_request_type": "cancel_delete_task",
-                                    "task_id": "12342151"
+                                    "card_request_type": "cancel_delete_task"
                                 }
                             }
                         ]
@@ -73,14 +71,15 @@ deleteCard={
 }
 
 def deleteTask(singletask):
+    print('*****************singletask:*****************\n',singletask)
     cardToReturn=copy.deepcopy(deleteCard)
     cardToReturn["body"][1]["facts"][0]["value"]=singletask["todo_id"]
-    cardToReturn["body"][1]["facts"][0]={"title": "項目 ID","value":singletask["todo_id"]}
+    cardToReturn["body"][1]["facts"][1]["value"]=singletask["todo_name"]
 
     # cardToReturn["body"][2]["columns"][0]["items"][0]["actions"][0]["data"].update(singletask)
     # cardToReturn["body"][2]["columns"][1]["items"][0]["actions"][0]["data"].update(singletask)
     cardToReturn["body"][2]["columns"][0]["items"][0]["actions"][0]["data"]["todo_id"]=singletask["todo_id"]
     cardToReturn["body"][2]["columns"][1]["items"][0]["actions"][0]["data"]["todo_id"]=singletask["todo_id"]   
-    
+    print('===========confirm delete card: ===============\n', cardToReturn)
 
     return cardToReturn

@@ -1,5 +1,6 @@
 import os, base64,copy,requests
-file = os.path.join(os.getcwd(), "winnie.jpg")
+dirname, filename = os.path.split(os.path.abspath(__file__))
+file = os.path.join(dirname, "winnie.jpg")
 image = open(file, 'rb')
 image_read = image.read()
 image_64_encode = base64.b64encode(image_read).decode()
