@@ -31,6 +31,7 @@
 ![](https://i.imgur.com/pciniIm.png)
 [管理bot 資源](https://docs.microsoft.com/zh-tw/azure/bot-service/bot-file-basics?view=azure-bot-service-4.0&tabs=csharp)
 * az login
+
 ![](https://i.imgur.com/q5KautW.png)
 ```
  "id": "82ffd014-405f-4ffa-83d3-e01c0b8c31ce",
