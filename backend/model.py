@@ -9,7 +9,7 @@ import string
 from datetime import datetime
 
 class Todo(BaseModel):
-    todo_id: str = uuid4().hex
+    todo_id: str = str(uuid4())
     todo_name: str
     todo_date: datetime
     todo_contents: Optional[str]
