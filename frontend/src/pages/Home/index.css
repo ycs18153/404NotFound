@@ -1,7 +1,7 @@
 .app {
     margin: 1rem auto;
     width: 50%;
-    min-width: 700px;
+    min-width: 400px;
     padding: 1.2rem;
     border: 0.2rem groove rgb(0, 0, 0);
     border-radius: 1rem;
