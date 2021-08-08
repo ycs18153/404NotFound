@@ -5,7 +5,8 @@ export async function putData(data, workerId){
     await fetch(`https://tsmcbot-404notfound.du.r.appspot.com/api/todo/${user_id.data}`, {
         method: "POST",
         headers: {
-            'content-type': 'application/json'
+            'content-type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
         },
         body: JSON.stringify( data )          // convert JS value to JSON string
     })
