@@ -1,5 +1,5 @@
 # Backend Server
-##### 實作 FAST API 提供給呼叫，並負責與 ATLAS 上的 MONGODB 叢集溝通，使前端可對資料進行 CRUD 操作。
+##### 實作 FAST API 提供呼叫，並負責與 ATLAS 上的 MONGODB 叢集溝通，使前端可對資料進行 CRUD 操作。
 
 ## File Structure
 ```
