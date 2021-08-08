@@ -27,7 +27,7 @@ async def shutdown_db_client():
     app.mongodb_client.close()
 
 origins = [
-    "http://localhost:3000",
+    "https://tsmc-todolist.de.r.appspot.com",
 ]
 
 app.add_middleware(
