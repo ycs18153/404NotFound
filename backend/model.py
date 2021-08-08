@@ -8,12 +8,13 @@ import string
 
 from datetime import datetime
 
+
 class Todo(BaseModel):
     todo_id: str = str(uuid4())
     todo_name: str
     todo_date: datetime
     todo_contents: Optional[str]
-    todo_update_date: datetime
+    todo_update_date: str
     todo_completed: bool = False
     employee_id: Optional[str]
 
@@ -29,7 +30,7 @@ class UpdateTodo(BaseModel):
     todo_name: Optional[str]
     todo_date: Optional[datetime]
     todo_contents: Optional[str]
-    todo_update_date: Optional[datetime]
+    todo_update_date: Optional[str]
     todo_completed: Optional[bool]
     employee_id: Optional[str]
 
