@@ -1,5 +1,5 @@
-## 用 Azure Bot Framework 實作 Teams Bot 
-### 主打功能
+# 用 Azure Bot Framework 實作 Teams Bot 
+## 主打功能
 * [Link to bot](https://teams.microsoft.com/l/chat/0/0?users=28:30eba4f2-6e15-458b-9fdf-f8bbf25efb4f)
 點按此連結可以連到teams，開啟此聊天機器人
 * 輸入工號連結 teams、line以及 web 服務
@@ -14,7 +14,7 @@
     > my tsmc
 * 主動推播訊息提醒代辦事項 (半小時/一小時前各發送一次)
 
-### 建Azure Bot Framework
+## 建Azure Bot Framework
 
 * [Bot Framework SDK](https://docs.microsoft.com/zh-tw/azure/bot-service/bot-service-overview-introduction?view=azure-bot-service-4.0)
 * Azure account_ free for the first year
@@ -252,7 +252,7 @@ bot.py 中的 on_message_activity() 修改成以下
 ![](https://i.imgur.com/E1zvsTd.png)
 
 
-### 亮眼技術
+## 亮眼技術
 * Adaptive Card:
 透過包含button、輸入框的Card介面，提供使用者簡易直覺易操作的的環境
 ![](https://i.imgur.com/0QHJhQ3.png=200x200)
