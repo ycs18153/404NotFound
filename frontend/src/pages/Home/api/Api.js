@@ -28,3 +28,15 @@ export async function deleteData(workerId, todo_id){
         }
     })
 }
+
+export async function modifyData(data, workerId, todo_id){
+    let user_id = await axios.get(`https://tsmcbot-404notfound.du.r.appspot.com/api/todo/web/${workerId}`)
+    console.log(`https://tsmcbot-404notfound.du.r.appspot.com/api/todo/${user_id.data}/${todo_id}`);
+    await fetch(`https://tsmcbot-404notfound.du.r.appspot.com/api/todo/${user_id.data}/${todo_id}`, {
+        method: "PUT",
+        headers: {
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify( data )
+    })
+}

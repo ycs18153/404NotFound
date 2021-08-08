@@ -1,7 +1,7 @@
 .app {
     margin: 1rem auto;
     width: 50%;
-    min-width: 500px;
+    min-width: 700px;
     padding: 1.2rem;
     border: 0.2rem groove rgb(0, 0, 0);
     border-radius: 1rem;
@@ -47,8 +47,9 @@ input {
     border: 0;
     background-color: rgb(212, 101, 101);
     color: #fff;
-    padding: 10px;
-    width: 5rem;
+    padding: 5px;
+    width: 4rem;
+    font-size: 0.9rem;
 }
 
 .remove:hover {
@@ -56,6 +57,63 @@ input {
     font-size: large;
 }
 
+.modify {
+    border: 0;
+    background-color: rgb(4, 166, 241);
+    color: #fff;
+    padding: 5px;
+    width: 4rem;
+    font-size: 0.9rem;
+    margin-right: 0.5rem;
+}
+
+.modify:hover {
+    border-radius: 0.5rem;
+    font-size: large;
+}
+
 h4 {
     margin: 0.2rem 0;
+}
+
+.modify-input {
+    width: 25rem;
+    height: 1.2rem;
+}
+
+.modify-date {
+    width: 12rem;
+    height: 1.2rem;
+    margin-right: 2.85rem;
+}
+
+.modify-time {
+    width: 12rem;
+    height: 1.2rem;
+}
+
+.modify-content {
+    width: 27rem;
+    height: 1.2rem;
+}
+
+#confirm-modify {
+    border: 0;
+    border-radius: 2rem;
+    background-color: rgb(4, 166, 241);
+    color: #fff;
+    padding: 2px;
+    width: 12rem;
+    font-size: 0.9rem;
+    margin: 0 3.2rem;
+}
+
+#cancel-modify {
+    border: 0;
+    border-radius: 2rem;
+    background-color: rgb(212, 101, 101);
+    color: #fff;
+    padding: 2px;
+    width: 12rem;
+    font-size: 0.9rem;
 }

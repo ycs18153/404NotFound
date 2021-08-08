@@ -1,27 +1,26 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import Edit from './components/Edit'
 import List from './components/List'
 import Loader from './components/Loader/Loader'
 import './index.css'
 import { readData } from './api/Api'
 
-async function fetchData(setData, workerId, setLoading){
+async function fetchData(setData, workerId){
     const result = await readData(workerId)
-    setData([])
+    let tmpData = []
     result.forEach(post => {
-        setData(prev => {
-            return [
-                ...prev,
-                {
-                    "todo_id": post.todo_id,
-                    "todo_name": post.todo_name,
-                    "todo_date": post.todo_date,
-                    "todo_update_date": post.todo_update_date,
-                    "todo_contents": post.todo_contents
-                }
-            ]
-        })
+        tmpData = [
+            ...tmpData,
+            {
+                "todo_id": post.todo_id,
+                "todo_name": post.todo_name,
+                "todo_date": post.todo_date,
+                "todo_update_date": post.todo_update_date,
+                "todo_contents": post.todo_contents
+            }
+        ]
     })
+    setData(tmpData)
 }
 
 const Home = ( {workerId} ) => {
@@ -39,7 +38,7 @@ const Home = ( {workerId} ) => {
     useEffect(() => {
         if(refetch){
             setLoading(true)
-            fetchData(setData, workerId, setLoading)
+            fetchData(setData, workerId)
             setRefetch(false)
             setLoading(false)
         }
