@@ -17,12 +17,12 @@
 ## How To Use 
 ##### 請遵循Bot指示，當個好User乖乖使用，也請勿對Web進行XSS之類的攻擊。
 1. #### Teams Bot: [按我即可加好友](https://teams.microsoft.com/l/chat/0/0?users=28:30eba4f2-6e15-458b-9fdf-f8bbf25efb4f)
-2. #### Web: [點我進入](https://tsmc-todolist.de.r.appspot.com/)
+2. #### Web: [點我進入](https://tsmc-todolist.de.r.appspot.com/) (公司內部會service會被擋住喔 ⛔⛔⛔)
 3. #### Line Bot: 請掃QR Code
 ![](https://i.imgur.com/whsUhBP.png)
 
 
-## Architecture
+## Architecture 
 ![](https://i.imgur.com/lzJ34uG.jpg)
 ##### 
 
