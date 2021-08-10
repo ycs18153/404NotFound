@@ -12,7 +12,7 @@
 > 3. ##### 在面對公司提供的眾多服務中，找不到自己需要的網站 (我就不知道RDP要去哪裡申請QQ)
 ##### 我們希望能幫這些粗心大意的人紀錄待辦事項，並在期限快到的時候主動通知他們，此外，也提供了查詢公司服務網站的功能。
 
-##### 由於在公司中最常使用到的軟體為Teams，為了降低將來的部署成本，本組採用Chat bot作為與User溝通的介面來達到以上目標。除了建構 ***Teams bot*** 之外，我們也提供了 ***Line bot*** 與 ***Web*** 介面，使菜雞們在公司外用Line或用Browser都能使用我們的服務。
+##### 由於在公司中最常使用到的軟體為Teams，為了降低將來的部署成本，本組採用Chat bot作為與User溝通的介面來達到以上目標。除了建構 ***Teams bot*** 之外，我們也提供了 ***Line bot*** 與 ***Web*** 介面，使菜雞們在不在公司時，用Line或用Browser都能使用我們的服務而無需任何額外的安裝。
 
 ## How To Use 
 ##### 請遵循Bot指示，當個好User乖乖使用，也請勿對Web進行XSS之類的攻擊。
@@ -21,11 +21,6 @@
 3. #### Line Bot: 請掃QR Code
 ![](https://i.imgur.com/whsUhBP.png)
 
-
-## Architecture 
-![](https://i.imgur.com/lzJ34uG.jpg)
-##### 
-
 ## Services
 
 * #### 透過與Bot互動來新增、刪除、修改或查詢重要的待辦事項
@@ -33,12 +28,28 @@
 * #### 主動通知你即將到來的待辦事項們，讓你想粗心都難
 * #### 在公司內用Teams，公司外用Line或Web，都能使用服務
 
+## Architecture 
+![](https://i.imgur.com/lzJ34uG.jpg)
+* ##### 使用 FARM Stack 作為後端與網頁開發框架 (Fast Api, React, MongoDB)
+* ##### 使用 MS Bot Framework 打造 Teams Bot，一支程式可直接應用在其他平台 (ex. Line)
+* ##### Atlas MongoDB  Cluster on GCP 可自動幫我們達到 Failove 與 Monitor 等 HA 相關保證，使我們能更專注於 Bot, API 和其他重要功能的開發。
+* ##### 透過一支 Cron Job 程式來幫我們檢查是否要快到期的待辦事項，若有則通知 Bots 請它主動提醒使用者。
+
 ## Demo
 ### Web
 https://user-images.githubusercontent.com/22583454/128749152-9adaa1de-9fa0-4c66-88a3-a8d368436524.mp4
-
+### Line Bot
+https://user-images.githubusercontent.com/37218627/128880054-984ab65d-5b4c-4c89-bc5c-a15d5ce5c241.mp4
 
 ## File Structure
+> ##### 每個資料夾內的 README 都有更詳細的說明與介紹。
+* ##### azure_chatbot: Teams Bot 程式碼
+* ##### line_chatbot: Line bot 程式碼
+* ##### frondend: Web UI 程式碼
+* ##### backend: 後端程式碼
+  * ##### main.py: 定義 FAST API 形式供前端呼叫
+  * ##### model.py: 定義所需的 Schema
+  * ##### controller.py: 負責對在雲端MongoDB叢集上的資料做存取
 ```
 404NotFound
 ├── Procfile
