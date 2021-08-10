@@ -14,7 +14,7 @@ line_chatbot
 │   └── carousel.py
 └── requirements.txt
 ```
-* ##### app.py: USer 與 Bot 之間的介面，負責接收 User 請求，並將請求 Pass 給後端處理，最後將結果回應給 User。
+* ##### app.py: User 與 Bot 之間的介面，負責接收 User 請求，並將請求 Pass 給後端處理，最後將結果回應給 User。
 * ##### Procfile: 將 BOT 部署至 Hroku 後，透過 Procfile 裡的指令來啟動 Bot。
 * ##### magicMessage/carousel.py: 提供 Message Template。
 
